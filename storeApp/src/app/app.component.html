@@ -1,0 +1,29 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" style="min-height: 100vh;" *ngIf="isDataLoaded">
+    <mat-toolbar class="example-toolbar" class="toolbar-fix">
+      <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+      <h1 class="example-app-name" color="primary">
+        <a [routerLink]="['/']">Gaming zone</a>
+      </h1>
+      <div style="flex:1 1 auto"></div>
+        <button mat-raised-button [routerLink]="['/placeorder']" matBadge="{{getCount()}}" class="mr-3"><mat-icon>shopping_cart</mat-icon></button>
+        <button mat-raised-button *ngIf="user" (click)="logout()" >Logout</button>
+        <button mat-raised-button *ngIf="!user" [routerLink]="['/user']" >Login</button>
+        <button mat-raised-button *ngIf="user && user.role === 'admin'" [routerLink]="['/adminpanel']" class="ml-2">Admin</button>
+    </mat-toolbar>
+    
+    <mat-sidenav-container [hasBackdrop]="false" class="example-sidenav-container" style="padding-top: 66px;min-height: 100vh;height: 100%;">
+      <mat-sidenav #snav [mode]="'slide'" class="h-100">
+        <mat-nav-list>
+          <app-side-nav-content></app-side-nav-content>
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+  <div class="text-center" *ngIf="error">
+    <h1 class="text-center">Error 500</h1>
+    <h4 class="text-center">Server down error!</h4>
+  </div>

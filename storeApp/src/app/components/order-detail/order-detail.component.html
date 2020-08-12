@@ -1,0 +1,48 @@
+<div class="container">
+    <div *ngIf="order" class="row py-4">
+        <div class="col-12">
+            <h2 class="h2 text-center">Order Detail</h2>
+            <div class="p-4 text-left">
+                <p><Strong>Order Id: </Strong>{{order._id}}</p>
+                <p><Strong>Order by: </Strong>{{order.name}}</p>
+                <p><Strong>Email: </Strong>{{order.email}}</p>
+                <p><Strong>Postal Address: </Strong>{{order.address}}</p>
+                <h3 class="text-center"><strong>############### Items ###############</strong></h3>
+            </div>
+            
+            <mat-table [dataSource]="order.items" class="mat-elevation-z1">
+                <!-- Position Column -->
+                <ng-container matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+                </ng-container>
+            
+                <!-- Name Column -->
+                <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.price}} &euro;/item</mat-cell>
+                </ng-container>
+            
+                <!-- Weight Column -->
+                <ng-container matColumnDef="quantity">
+                <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.stock}} </mat-cell>
+                </ng-container>
+            
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="brand">
+                <mat-header-cell *matHeaderCellDef> Brand </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.brand}} </mat-cell>
+                </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="['title', 'price', 'quantity', 'brand']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['title', 'price', 'quantity', 'brand'];"></mat-row>
+            </mat-table>
+            <h2 class="text-right w-100">Total : {{getTotal()}} &euro;</h2>
+        </div>
+    </div>
+    <div *ngIf="err" class="row py-4">
+        <h2 class="h2 w-100 text-center">Order not found</h2>
+        <p class="w-100 text-center">for order id :{{id}}</p>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="container">
+    <div *ngIf="product" class="row py-4">
+        <div class="col-sm-5">
+            <div class="py-4" style="max-height: 600px;">
+                <img [src]='env.api+product.url' height="auto" width="100%" >
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <h2 class="h2">Product Details:</h2>
+            <p><strong>ID:</strong>{{product._id}}</p>
+            <h4 class="h3"><strong>Product Title:</strong> {{product.title}}</h4>
+            <h4 class="h3"><strong>Product Brand:</strong> {{product.brand}}</h4>
+            <h4 class="h3"><strong>Price:</strong> {{product.price}} &euro;</h4>
+            <h4 class="h3"><strong>Category:</strong> {{product.category}}</h4>
+            <h4 class="h3"><strong>Seller Name:</strong> {{product.soldBy}}</h4>
+            <h4 class="h4" *ngIf="product.stock<=10"><strong>{{product.stock <= 0 ? 'Out of stock' : product.stock + ' item left'}}</strong></h4>
+            <div class="text-left">
+                <button mat-raised-button class="mr-2" [disabled]="product.stock<=0" (click)="addToCart()">
+                    <mat-icon>add_shopping_cart</mat-icon>
+                </button>
+                <button mat-raised-button [disabled]="product.stock<=0" (click)="buyNow()">
+                    Add & Buy<mat-icon >preview</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="col-12 py-3 my-2">
+            <h3 class="h3"><strong>Description</strong></h3>
+            <p>
+                {{product.description}}
+            </p>
+        </div>
+    </div>
+    <div *ngIf="!product">
+        <h1 class="text-center">"No product found !"</h1>
+    </div>
+</div>

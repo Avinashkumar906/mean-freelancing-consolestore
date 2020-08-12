@@ -1,0 +1,15 @@
+.container{
+  padding: 0 10%;
+  box-sizing: border-box;
+  text-align: center;
+  // min-height: 90vh;
+  form{
+    padding: 3rem 4rem;
+    height: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    .mat-form-field{
+      width: 100%;
+    }
+  }
+}

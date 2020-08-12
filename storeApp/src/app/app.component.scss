@@ -1,0 +1,13 @@
+.toolbar-fix
+{
+    position: fixed;
+    top: 0px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+.side-nav-fix{
+    z-index: 5;
+    padding-top: 56px;
+}

@@ -1,0 +1,81 @@
+<div class="container">
+  <mat-horizontal-stepper color="primary" linear #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel>Fill Detail</ng-template>
+        <form [formGroup]="firstFormGroup">
+          <h1 class="text-center w-100 my-2">Fill Shipping Details</h1>
+          <div class="row m-0">
+            <div class="col-sm-6">
+              <mat-form-field>
+                <mat-label>Name Field</mat-label>
+                <input matInput placeholder="Enter Name" formControlName="name" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field>
+                <mat-label>Email Field</mat-label>
+                <input matInput placeholder="Enter Email" formControlName="email" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field>
+                <mat-label>Address Field</mat-label>
+                <textarea matInput placeholder="Enter Address" formControlName="address" required></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div>
+            <button mat-raised-button matStepperNext type="button">Continue</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [completed]="isSubmitted">
+        <ng-template matStepLabel>Overview</ng-template>
+        <h1 class="text-center w-100 my-4">Overview</h1>
+        <div class="adjust">
+          <mat-table [dataSource]="cart.items" class="mat-elevation-z2">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.title }} </mat-cell>
+            </ng-container>
+            <!-- Quantity Column -->
+            <ng-container matColumnDef="stock">
+              <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.stock}} </mat-cell>
+            </ng-container>
+            <!-- Price Column -->
+            <ng-container matColumnDef="price">
+              <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+            </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef> Add </mat-header-cell>
+              <mat-cell *matCellDef="let element"><button mat-button  (click)='add(element)'>+</button></mat-cell>
+            </ng-container>
+            <!-- Price Column -->
+            <ng-container matColumnDef="delete">
+              <mat-header-cell *matHeaderCellDef> Remove </mat-header-cell>
+              <mat-cell *matCellDef="let element"> <button mat-button (click)='remove(element)'>-</button> </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="[ 'name', 'stock', 'price', 'description', 'delete']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'stock', 'price', 'description' ,'delete'];"></mat-row>
+          </mat-table>
+          <h2 class="text-right my-3 mr-1">Total Price:{{getTotal()}}</h2>
+          <button mat-raised-button type="button" (click)="placeOrder(stepper)" [disabled]="cart.items.length == 0">Place Order</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>OrderPlaced</ng-template>
+        <div class="adjust">
+          <div *ngIf="placedOrder" class="text-center">
+            <h2 class="text-center">Order ID: {{placedOrder && placedOrder._id ? placedOrder._id : 'Error occured try after some time'}}</h2>
+            <h4 class="text-center">{{placedOrder && placedOrder.name ? placedOrder.name : ''}}</h4>
+            <h4 class="text-center">{{placedOrder && placedOrder.email ? placedOrder.email : ''}}</h4>
+          </div>
+          <button mat-button [routerLink]="['/']" (click)="stepper.reset()">Close</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+</div>

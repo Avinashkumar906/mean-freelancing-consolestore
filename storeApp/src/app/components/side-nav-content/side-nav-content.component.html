@@ -1,0 +1,68 @@
+<div style="padding-top: 56px;">
+  <mat-accordion >
+      <div class="p-1">
+        <mat-form-field class="example-form-field">
+          <mat-label>Search order by id</mat-label>
+          <input matInput type="text" [(ngModel)]="value">
+          <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="searchOrder()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="border" style="cursor: pointer;">
+        <mat-list role="list" (click)="changeCategory('all')">
+          <mat-list-item role="listitem">
+              <span>All Products</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="cursor: pointer;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Consoles </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item (click)="changeCategory('ps4acs')" role="listitem">Play Station</mat-list-item>
+          <mat-list-item (click)="changeCategory('xboxacs')" role="listitem">Xbox</mat-list-item>
+          <mat-list-item (click)="changeCategory('gaming')" role="listitem">Gaming Desktop</mat-list-item>
+          <mat-list-item (click)="changeCategory('serverws')" role="listitem">Server Workstations</mat-list-item>
+          <mat-list-item (click)="changeCategory('laptop')" role="listitem">Laptops</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="cursor: pointer;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Accessories </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item (click)="changeCategory('monitor')" role="listitem">Monitor</mat-list-item>
+          <mat-list-item (click)="changeCategory('keyboard')" role="listitem">Keyboard</mat-list-item>
+          <mat-list-item (click)="changeCategory('mouse')" role="listitem">Mouse</mat-list-item>
+          <mat-list-item (click)="changeCategory('speaker')" role="listitem">Speaker</mat-list-item>
+          <mat-list-item (click)="changeCategory('printer')" role="listitem">Printer</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="cursor: pointer;">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Gaming </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item (click)="changeCategory('game')" role="listitem">Games</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+
+      <div class="border" style="cursor: pointer;">
+        <mat-list role="list" (click)="changeCategory('all')">
+          <mat-list-item role="listitem">
+              <span>About</span>
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            <span>Contact</span>
+          </mat-list-item>
+        </mat-list>
+      </div>  
+
+  </mat-accordion>
+</div>
