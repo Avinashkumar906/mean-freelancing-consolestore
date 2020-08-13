@@ -14,8 +14,8 @@ export class RegistrationComponent implements OnInit {
 
   signUpForm: any;
   signInForm: any;
-  signInMessage:string = '';
-  signUpMessage:string ='';
+  signInMessage:string = ' ';
+  signUpMessage:string =' ';
 
   constructor(private formBuilder: FormBuilder,private httpService:HttpService,private userService:UserService) {
   }
@@ -41,18 +41,26 @@ export class RegistrationComponent implements OnInit {
   }
 
   signUp() {
+    this.signUpMessage = null
     this.httpService.signUp(this.signUpForm.value).subscribe(
       data=>{
-        this.signUpMessage = 'Signed up successfuly'
+        this.signUpMessage = 'Signed up successfuly';
+        this.signUpForm.markAsPristine()
+        this.signUpForm.markAsUntouched()
+        this.signUpForm.reset()
       },
       (err:any)=>this.signUpMessage = err.error.message
     )
   }
   signIn() {
+    this.signInMessage = null;
     this.httpService.signIn(this.signInForm.value).subscribe(
       (data:User)=>{
         this.signInMessage = 'Logged in Successfully'
         this.userService.putUser(data)
+        this.signInForm.markAsPristine()
+        this.signInForm.markAsUntouched()
+        this.signInForm.reset()
       },
       (err:any)=>this.signInMessage = err.error.message
     )

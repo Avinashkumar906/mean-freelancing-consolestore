@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
-    <h2 class="text-center h2 w-100">{{category == 'all'? "Products" : obj[category] | uppercase}}</h2>
+    <h2 class="text-center h2 w-100">{{menuTitle[category] | uppercase}}</h2>
     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let item of products | filter:category ">
-      <mat-card class="example-card" class="m-1" >
+      <mat-card class="example-card" class="m-1">
         <mat-card-content>
           <mat-card-title> {{item.title}} </mat-card-title>
           <mat-card-subtitle> By {{item.brand}} </mat-card-subtitle>
@@ -11,27 +11,20 @@
           <img mat-card-image [src]='env.api+item.url' alt="" width="80%" height="100%">
         </div>
         <mat-card-content class="test-center">
-          <p *ngIf="item.stock <= 5">{{item.stock > 0 && item.stock <=5 ? item.stock+' items left' : "Out of Stock"}}</p>
+          <p *ngIf="item.stock <= 5">{{item.stock > 0 && item.stock <=5 ? item.stock+' items left' : "Out of Stock"}}
+          </p>
           <p *ngIf="!(item.stock <= 5)">"Available in stock"</p>
           <mat-card-title class="text-center">{{item.price}} &euro; </mat-card-title>
         </mat-card-content>
         <mat-card-actions class="text-center">
-          <button mat-raised-button  [disabled]="item.stock<=0">
+          <button mat-raised-button [disabled]="item.stock<=0">
             <mat-icon (click)="addToCart(item)">add_shopping_cart</mat-icon>
           </button>
           <button [routerLink]="['/product',item._id]" mat-raised-button>
-            View<mat-icon >preview</mat-icon>
+            View<mat-icon>preview</mat-icon>
           </button>
         </mat-card-actions>
-    </mat-card>
-    </div>
-    <div class="w-100 text-center">
-      <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-        <button mat-raised-button>Basic</button>
-        <button mat-raised-button>Basic</button>
-        <button mat-raised-button>Basic</button>
-        <button mat-raised-button>Basic</button>
-      </mat-button-toggle-group> -->
+      </mat-card>
     </div>
   </div>
 </div>

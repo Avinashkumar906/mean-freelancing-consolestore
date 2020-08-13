@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService, User } from 'src/app/service/user.service';
 import { CartService, Cart } from 'src/app/service/cart.service';
 import { HttpService } from 'src/app/service/http.service';
 import _ from 'lodash'
 import { ProductService } from 'src/app/service/product.service';
+import { DisposeBag } from '@ronas-it/dispose-bag/dist/src';
 
 @Component({
   selector: 'app-place-order',
   templateUrl: './place-order.component.html',
   styleUrls: ['./place-order.component.scss']
 })
-export class PlaceOrderComponent implements OnInit {
+export class PlaceOrderComponent implements OnInit,OnDestroy {
 
   constructor(
       private _formBuilder: FormBuilder,
@@ -25,29 +26,37 @@ export class PlaceOrderComponent implements OnInit {
         email: ['', Validators.required],
         address: ['', Validators.required]
       });
+      this.disposeBag = new DisposeBag()
     }
-
-  user:User;
-  cart:Cart;
-  placedOrder:any = null;
-  isSubmitted:boolean = false;
-  firstFormGroup: FormGroup;
+    
+    placedOrder:any = null;
+    isSubmitted:boolean = false;
+    firstFormGroup: FormGroup;
+    disposeBag:DisposeBag;
+    user:User = _.cloneDeep(this.userService.getUser());
+    cart:Cart = _.cloneDeep(this.cartService.getCart());
+    
+  ngOnDestroy(): void {
+    this.disposeBag.unsubscribe()
+  }
 
   ngOnInit(): void {
     // initializing cart and user
-    this.user = this.userService.getUser()
-    this.cart = this.cartService.getCart()
-    this.userService.userChanged.subscribe(
-      data=>{
-        this.user = data;
-        this.firstFormGroup.patchValue(this.user)
-      }
+    this.disposeBag.add(
+      this.userService.userChanged.subscribe(
+        data=>{
+          this.user = data;
+          this.firstFormGroup.patchValue(this.user)
+        }
+      )
     )
-    this.cartService.cartChanged.subscribe(
-      data=>this.cart = _.cloneDeep(data)
+    this.disposeBag.add(
+      this.cartService.cartChanged.subscribe(
+        data=>this.cart = _.cloneDeep(data)
+      )
     )
     // initializing Form
-    this.firstFormGroup.patchValue(this.user)
+    this.user ? this.firstFormGroup.patchValue(this.user) : '';
   }
 
   getTotal(){
@@ -65,13 +74,14 @@ export class PlaceOrderComponent implements OnInit {
     this.cart.name =this.firstFormGroup.value.name;
     this.cart.email =this.firstFormGroup.value.email
     this.cart.address =this.firstFormGroup.value.address
-
-    this.httpService.postOrder(this.cart).subscribe(
-      data=>{
-        this.placedOrder = data
-        stepper.next()
-        this.cartService.clearCart()
-      }
+    this.disposeBag.add(
+      this.httpService.postOrder(this.cart).subscribe(
+        data=>{
+          this.placedOrder = data
+          stepper.next()
+          this.cartService.clearCart()
+        }
+      )
     )
   }
 

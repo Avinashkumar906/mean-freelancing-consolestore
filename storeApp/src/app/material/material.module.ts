@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { MatButtonModule } from '@angular/material/button'
+import {MatButtonModule} from '@angular/material/button'
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -16,27 +16,29 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatTableModule} from '@angular/material/table';
 import {MatDividerModule} from '@angular/material/divider';
-// import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 
 const modules = [
-    MatButtonModule,
-    MatBadgeModule,
-    MatDividerModule,
-    MatTableModule,
-    MatMenuModule,
-    MatIconModule,
-    MatInputModule,
-    MatStepperModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatTabsModule,
-    MatExpansionModule,
-    MatSelectModule,
-    MatCardModule,
-    MatGridListModule,
-    MatFormFieldModule
-  ]
+  MatButtonModule,
+  MatBadgeModule,
+  MatDividerModule,
+  MatTableModule,
+  MatMenuModule,
+  MatIconModule,
+  MatInputModule,
+  MatStepperModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatListModule,
+  MatTabsModule,
+  MatExpansionModule,
+  MatSelectModule,
+  MatCardModule,
+  MatGridListModule,
+  MatFormFieldModule,
+  MatProgressSpinnerModule,
+]
+
 @NgModule({
   declarations: [],
   imports:modules,

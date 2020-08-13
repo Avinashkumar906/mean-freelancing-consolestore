@@ -9,7 +9,7 @@ module.exports = {
             const user = await User.find();
             res.status(200).json(user)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     getUsers:async (req, res, next) => {
@@ -18,7 +18,7 @@ module.exports = {
             const users = await User.find({},{password:0});
             res.status(200).json(users)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     deleteUser:async (req, res, next) => {
@@ -27,7 +27,7 @@ module.exports = {
             let user = await User.findByIdAndDelete(_id)
             res.status(200).json(user)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     toggleRole:async (req, res, next) => {
@@ -39,7 +39,7 @@ module.exports = {
             await user.save()
             res.status(200).json(user)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     postSignUp:async (req, res, next) => {
@@ -47,7 +47,7 @@ module.exports = {
             const email = req.body.email.toLowerCase()
             let userfound = await User.findOne({ email: email})
             if(userfound) 
-                res.status(400).json({message:'user with email already exist!'})
+                res.status(500).json({message:'user with email already exist!'})
             else{
                 let user = new User({
                     name: req.body.name,
@@ -58,7 +58,7 @@ module.exports = {
                 res.status(200).json(user)
             }
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     postSignIn:async (req, res, next) => {
@@ -66,7 +66,7 @@ module.exports = {
             const { email,password} = req.body
             let userfound = await User.findOne({ email: email.toLowerCase(),password: password})
             if(!userfound) 
-                res.status(400).json({message:'Incorrect username and password!'})
+                res.status(500).json({message:'Incorrect username and password!'})
             else{
                 let obj = new Object({
                     name:userfound.name,
@@ -76,7 +76,7 @@ module.exports = {
                 res.status(200).json(obj)
             }
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     }            
 }

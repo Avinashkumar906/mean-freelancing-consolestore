@@ -16,7 +16,7 @@ module.exports = {
                 }
             })
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     updateProduct:async (req, res, next) => {
@@ -39,7 +39,7 @@ module.exports = {
             products.reverse()
             res.status(200).json(products)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },      
     getProduct:async (req, res, next) => {
@@ -48,7 +48,7 @@ module.exports = {
             let product = await Product.findById(_id)
             res.status(200).json(product)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     }          
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpService } from 'src/app/service/http.service';
 import { UserService, User } from 'src/app/service/user.service';
 import _ from 'lodash'
+import { DisposeBag } from 'node_modules/@ronas-it/dispose-bag'
 import { ProductService, Product } from 'src/app/service/product.service';
 import { environment } from 'src/environments/environment';
 import { Cart, CartService } from 'src/app/service/cart.service';
@@ -12,7 +13,7 @@ import { Cart, CartService } from 'src/app/service/cart.service';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.scss']
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent implements OnInit, OnDestroy{
 
   constructor(
       private formBuilder: FormBuilder,
@@ -21,6 +22,7 @@ export class AdminPanelComponent implements OnInit {
       private userService:UserService,
       private cartService:CartService,
     ) { 
+      // initilizing add product form
     this.product = this.formBuilder.group({
       title:this.formBuilder.control('',[Validators.required, Validators.minLength(4)]),
       price:this.formBuilder.control('',[Validators.required]),
@@ -32,50 +34,72 @@ export class AdminPanelComponent implements OnInit {
       description:this.formBuilder.control(''),
       soldBy:this.formBuilder.control(''),
     })
+    // initializing dispose bag
+    this.disposeBag = new DisposeBag()
+  }
+  ngOnDestroy(): void {
+    this.disposeBag.unsubscribe()
   }
 
-  product: FormGroup;
   env = environment
   id:string;
   image:string;
-  productList:Array<Product> = [];
+  product: FormGroup;
+
+  productList:Array<Product> = this.productService.getProducts();
+  
   userList:Array<User> = [];
+  
+  alert:string = ' ';
   orderList:Array<Cart> = [];
-  alert:string;
   file:any = null;
+  disposeBag:DisposeBag;
   user:User = this.userService.getUser()
 
   ngOnInit(): void {
-    this.productList = this.productService.getProducts()
-    this.productService.productsChanged.subscribe(
-      data=> this.productList = _.cloneDeep(data)
+    this.disposeBag.add(
+      this.productService.productsChanged.subscribe(
+        data=> this.productList = _.cloneDeep(data)
+      )
     )
-    this.userService.userChanged.subscribe(
-      (data:User) => this.user = data
+    this.disposeBag.add(
+      this.userService.userChanged.subscribe(
+        (data:User) => this.user = data
+      )
     )
     this.fetchUsers()
     this.fetchOrders()
   }
 
+  // User tab functions below
   fetchUsers(){
-    this.httpService.getUsers().subscribe(
-      data=>this.userList = _.cloneDeep(_.filter(data,(user:User)=>user.email !== environment.admin))
+    this.disposeBag.add(
+      this.httpService.getUsers().subscribe(
+        data=>this.userList = _.cloneDeep(_.filter(data,(user:User)=>user.email !== environment.admin))
+      )
     )
   }
   deleteUser(user:User){
-    this.httpService.deleteUser(user).subscribe(
-      data=>this.fetchUsers()
+    this.disposeBag.add(
+      this.httpService.deleteUser(user).subscribe(
+        data=>this.fetchUsers()
+      )
     )
   }
   toggleRole(user:User){
-    this.httpService.toggleRole(user).subscribe(
-      data=>this.fetchUsers()
+    this.disposeBag.add(
+      this.httpService.toggleRole(user).subscribe(
+        data=>this.fetchUsers()
+      )
     )
   }
 
+  // Order tab related functions
   fetchOrders(){
-    this.httpService.getOrders().subscribe(
-      data=>this.orderList = _.cloneDeep(data)
+    this.disposeBag.add(
+      this.httpService.getOrders().subscribe(
+        data=>this.orderList = _.cloneDeep(data)
+      )
     )
   }
   getCount(items){
@@ -86,15 +110,18 @@ export class AdminPanelComponent implements OnInit {
     return sum;
   }
 
+  // Product tab related function
   fileHandler(event){
     this.file = event.files[0]
   }
   deleteProduct(product){
-    this.httpService.deleteProduct(product).subscribe(
-      (data:Product)=>{
-        this.cartService.clearCart()
-        this.productService.removeProduct(data)
-      }
+    this.disposeBag.add(
+      this.httpService.deleteProduct(product).subscribe(
+        (data:Product)=>{
+          this.cartService.clearCart()
+          this.productService.removeProduct(data)
+        }
+      )
     )
   }
   updateProduct(product:Product){
@@ -105,35 +132,53 @@ export class AdminPanelComponent implements OnInit {
   resetForm(){
     this.id = undefined;
     this.image = undefined;
-    // this.product.reset();
+    this.product.markAsPristine()
+    this.product.markAsUntouched()
+    this.product.reset();
+    this.alert = 'Form Reset!'
   }
   
   submit(){
+    this.alert = null;
     if(this.id){
       this.submitUpdate()
     }else if(this.file){
       let formData = new FormData()
       formData.append('file',this.file,this.file.name)
       formData.append('body',JSON.stringify(this.product.value))
-      this.httpService.addProduct(formData).subscribe(
-        (data)=>{
-          this.alert = "uploaded succesfully!" 
-          this.cartService.clearCart()
-          this.productService.putProduct(data)
-        },
-        err=>this.alert = "error at server try after some time"
+      this.disposeBag.add(
+        this.httpService.addProduct(formData).subscribe(
+          (data)=>{
+            this.alert = "uploaded succesfully!" 
+            this.cartService.clearCart()
+            this.productService.putProduct(data)
+            this.product.markAsPristine()
+            this.product.markAsUntouched()
+            this.product.reset();
+          },
+          err=>this.alert = "error at server try after some time"
+        )
       )
+    } else {
+      alert('Please fill all detail and Select a file!')
     }
   }
 
   submitUpdate(){
-    this.httpService.updateProduct(this.product.value,this.id).subscribe(
-      (data:Product)=>{
-        this.alert = "updated succesfully!"
-        this.resetForm()
-        this.cartService.clearCart()
-        this.productService.patchedProduct(data)
-      }
+    this.disposeBag.add(
+      this.httpService.updateProduct(this.product.value,this.id).subscribe(
+        (data:Product)=>{
+          this.alert = "updated succesfully!"
+          this.id = undefined;
+          this.image = undefined;
+          this.product.markAsPristine()
+          this.product.markAsUntouched()
+          this.product.reset()
+          this.cartService.clearCart()
+          this.productService.patchedProduct(data)
+        },
+        err=>this.alert = "error at server try after some time"
+      )
     )
   }
 

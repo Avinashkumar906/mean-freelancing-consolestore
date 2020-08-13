@@ -8,6 +8,7 @@
 /storeApp/node_modules
 /express/node_modules
 /express/.env
+/express/static/*
 
 # IDEs and editors
 /.idea

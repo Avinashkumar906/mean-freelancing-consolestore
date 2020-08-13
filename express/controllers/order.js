@@ -1,5 +1,6 @@
 const Order = require('../models/order')
 const Product = require('../models/product')
+const order = require('../models/order')
 
 module.exports = {
     addOrder:async (req, res, next) => {
@@ -13,15 +14,16 @@ module.exports = {
             });
             res.json(order)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     getOrders:async (req, res, next) => {
         try { 
             let orders = await Order.find()
+            orders.reverse()
             res.status(200).json(orders)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     getOrdersByMail:async (req, res, next) => {
@@ -30,7 +32,7 @@ module.exports = {
             let orders = await Order.find({email})
             res.json(orders)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     },
     getOrderById:async (req, res, next) => {
@@ -39,7 +41,7 @@ module.exports = {
             let order = await Order.findById(_id)
             res.json(order)
         } catch (error) {
-            res.status(400).json(error)
+            res.status(500).json(error)
         }
     }          
 }

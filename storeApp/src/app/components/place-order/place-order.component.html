@@ -47,7 +47,7 @@
             <!-- Price Column -->
             <ng-container matColumnDef="price">
               <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+              <mat-cell *matCellDef="let element"> {{element.price}} &euro;/item</mat-cell>
             </ng-container>
             <!-- Description Column -->
             <ng-container matColumnDef="description">
@@ -62,7 +62,7 @@
             <mat-header-row *matHeaderRowDef="[ 'name', 'stock', 'price', 'description', 'delete']"></mat-header-row>
             <mat-row *matRowDef="let row; columns: ['name', 'stock', 'price', 'description' ,'delete'];"></mat-row>
           </mat-table>
-          <h2 class="text-right my-3 mr-1">Total Price:{{getTotal()}}</h2>
+          <h2 class="text-right my-3 mr-1">Total Price:{{getTotal()}} &euro;</h2>
           <button mat-raised-button type="button" (click)="placeOrder(stepper)" [disabled]="cart.items.length == 0">Place Order</button>
         </div>
       </mat-step>

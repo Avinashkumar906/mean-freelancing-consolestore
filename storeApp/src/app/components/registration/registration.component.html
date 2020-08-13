@@ -7,7 +7,7 @@
                 <mat-icon class="example-tab-icon">login</mat-icon>
                 <span class="mx-2">Login</span>                
             </ng-template>
-            <form [formGroup]="signInForm" (ngSubmit)="signInForm.valid && signIn()" >
+            <form [formGroup]="signInForm" >
                 <div class="example-container">
                     <mat-form-field appearance="outline">
                         <mat-label>Enter your email</mat-label>
@@ -19,12 +19,13 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Enter your password</mat-label>
                         <input matInput type="password" placeholder="pat@example.com" formControlName="password" required />
-                        <mat-error >Must be Alphanumeric</mat-error>
+                        <mat-error >lenggth 4 to 20 character and alphanumeric </mat-error>
                     </mat-form-field>
                 </div>
-                <h5 class="text-center">{{signInMessage}}</h5>
+                <h5 class="text-center" *ngIf="signInMessage">{{signInMessage}}</h5>
+                <span class="spinner-border" *ngIf="!signInMessage"></span>
                 <div class="form-element">
-                    <button mat-raised-button color="primary" class="button">SignIn</button>
+                    <button mat-raised-button type="button" [disabled]="signInForm.invalid" (click)="signInForm.valid && signIn()">SignIn</button>
                 </div>
             </form>
         </mat-tab>
@@ -34,7 +35,7 @@
                 <mat-icon class="example-tab-icon">perm_contact_calendar</mat-icon>
                 <span class="mx-2">SignUp</span>
             </ng-template>
-            <form [formGroup]="signUpForm" (ngSubmit)="signUp()" >
+            <form [formGroup]="signUpForm" >
                 <div class="example-container">
                     <mat-form-field appearance="outline">
                         <mat-label>Enter your name</mat-label>
@@ -53,12 +54,13 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Enter your password</mat-label>
                         <input matInput type="password" placeholder="pat@example.com" formControlName="password" required />
-                        <mat-error >Must be Alphanumeric</mat-error>
+                        <mat-error >lenggth 4 to 20 character and alphanumeric </mat-error>
                     </mat-form-field>
                 </div>
-                <h5 class="text-center">{{signUpMessage}}</h5>
+                <h5 class="text-center" *ngIf="signUpMessage">{{signUpMessage}}</h5>
+                <span class="spinner-border" *ngIf="!signUpMessage"></span>
                 <div class="form-element">
-                    <button mat-raised-button color="primary" class="button">SignUp</button>
+                    <button mat-raised-button type="button" (click)="signUpForm.valid && signUp()" [disabled]="signUpForm.invalid">SignUp</button>
                 </div>
             </form>
         </mat-tab>

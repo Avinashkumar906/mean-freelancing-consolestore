@@ -1,7 +1,7 @@
 <div class="container" *ngIf="user.role === 'admin'">
     <mat-tab-group>
         <mat-tab label="Products">
-            <form [formGroup]="product" (ngSubmit)="product.valid && submit()" >
+            <form [formGroup]="product" >
                 <div class="row w-100">
                     <div class="col-md-12 mb-1" *ngIf="!id">
                         <input type="file" #fileControl (change)="fileHandler(fileControl)" hidden/>
@@ -69,9 +69,10 @@
                     </div>
                     <div class="col-12">
                         <h4 *ngIf="alert" class="text-center m-1">{{alert}}</h4>
+                        <span class="spinner-border" *ngIf="!alert"></span>
                         <div class="form-element">
-                            <button mat-raised-button color="primary" [disabled]="product.invalid">Save</button>
-                            <button mat-raised-button class="ml-2" *ngIf="id && image" (click)="resetForm()">Reset</button>
+                            <button type="button" mat-raised-button color="primary" (click)="product.valid && submit()" [disabled]="product.invalid">Save</button>
+                            <button type="button" mat-raised-button class="ml-2" (click)="resetForm()">Reset</button>
                         </div>
                     </div>
                 </div>

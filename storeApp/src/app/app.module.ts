@@ -14,7 +14,6 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { PlaceOrderComponent } from './components/place-order/place-order.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
-import { MyProfileComponent } from './components/my-profile/my-profile.component';
 
 import { HttpService } from './service/http.service';
 import { CartService } from './service/cart.service';
@@ -24,6 +23,8 @@ import { ProductService } from './service/product.service';
 import { FilterPipe } from './pipe/filter.pipe';
 import { PaginationPipe } from './pipe/pagination.pipe';
 import { SearchPipe } from './pipe/search.pipe';
+import { ContactComponent } from './components/contact/contact.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -35,10 +36,11 @@ import { SearchPipe } from './pipe/search.pipe';
     PlaceOrderComponent,
     AdminPanelComponent,
     OrderDetailComponent,
-    MyProfileComponent,
     FilterPipe,
     PaginationPipe,
-    SearchPipe
+    SearchPipe,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

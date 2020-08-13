@@ -54,11 +54,11 @@
       </mat-expansion-panel>
 
       <div class="border" style="cursor: pointer;">
-        <mat-list role="list" (click)="changeCategory('all')">
-          <mat-list-item role="listitem">
+        <mat-list role="list">
+          <mat-list-item role="listitem" [routerLink]="['/about']">
               <span>About</span>
           </mat-list-item>
-          <mat-list-item role="listitem">
+          <mat-list-item role="listitem" [routerLink]="['/contact']">
             <span>Contact</span>
           </mat-list-item>
         </mat-list>
