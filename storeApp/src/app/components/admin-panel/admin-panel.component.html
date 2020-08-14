@@ -174,9 +174,14 @@
                     <mat-header-cell *matHeaderCellDef> View Order</mat-header-cell>
                     <mat-cell *matCellDef="let element" style="cursor: pointer;" [routerLink]="['/order',element._id]"> View <mat-icon>view_compact</mat-icon> </mat-cell>
                 </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="cursor: pointer;" (click)="deleteOrder(element)">Delete <mat-icon>delete</mat-icon>? </mat-cell>
+                </ng-container>
             
-                <mat-header-row *matHeaderRowDef="['name','email','quantity','view']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['name','email','quantity','view'];"></mat-row>
+                <mat-header-row *matHeaderRowDef="['name','email','quantity','view','delete']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['name','email','quantity','view','delete'];"></mat-row>
             </mat-table>
         </mat-tab>
     </mat-tab-group>

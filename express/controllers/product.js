@@ -1,5 +1,6 @@
 const Product = require('../models/product')
 const fs = require('fs')
+const path = require('path')
 
 module.exports = {
     addProduct:async (req, res, next) => {
@@ -20,18 +21,29 @@ module.exports = {
         }
     },
     updateProduct:async (req, res, next) => {
-        let {_id} = req.query;
-        let update = req.body;
-        await Product.findByIdAndUpdate(_id,update,{useFindAndModify:false})
-        let product = await Product.findById(_id)
-        res.status(201).json(product)
+        try {
+            let {_id} = req.query;
+            let update = req.body;
+            await Product.findByIdAndUpdate(_id,update,{useFindAndModify:false})
+            let product = await Product.findById(_id)
+            res.status(201).json(product)    
+        } catch (error) {
+            res.status(500).json(error) 
+        }
+        
     },
     deleteProduct:async (req, res, next) => {
-        let {_id} = req.query;
-        console.log(_id)
-        let product = await Product.findByIdAndDelete(_id)
-        product ? fs.unlinkSync(`.${product.url}`) : console.log('no product')
-        res.status(201).json(product)
+        try {
+            let {_id} = req.query;
+            // let product = await Product.findById(_id)
+            // console.log(path.join(__dirname,'../',product.url))
+            let product = await Product.findByIdAndDelete(_id)
+            product ? fs.unlinkSync(`.${product.url}`) : console.log('no product')
+            res.status(201).json(product)    
+        } catch (error) {
+            console.log(error)
+            res.status(500).json(error) 
+        }
     },
     getProducts:async (req, res, next) => {
         try {  

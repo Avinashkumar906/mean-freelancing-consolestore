@@ -1,11 +1,11 @@
 <div class="container">
     <div *ngIf="product" class="row py-4">
-        <div class="col-sm-5">
-            <div class="py-4" style="max-height: 600px;">
-                <img [src]='env.api+product.url' height="auto" width="100%" >
+        <div class="col-sm-6">
+            <div style="height: 350px;">
+                <img [src]='env.api+product.url' height="100%" width="auto" class="mx-auto d-block">
             </div>
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
             <h2 class="h2">Product Details:</h2>
             <p><strong>ID:</strong>{{product._id}}</p>
             <h4 class="h3"><strong>Product Title:</strong> {{product.title}}</h4>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="col-12 py-3 my-2">
-            <h3 class="h3"><strong>Description</strong></h3>
+            <h2 class="h2">Description:</h2>
             <p>
                 {{product.description}}
             </p>

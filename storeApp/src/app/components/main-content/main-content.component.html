@@ -2,13 +2,13 @@
   <div class="row">
     <h2 class="text-center h2 w-100">{{menuTitle[category] | uppercase}}</h2>
     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let item of products | filter:category ">
-      <mat-card class="example-card" class="m-1">
+      <mat-card class="example-card" class="mb-4 mx-auto" style="max-width: 400px;">
         <mat-card-content>
-          <mat-card-title> {{item.title}} </mat-card-title>
-          <mat-card-subtitle> By {{item.brand}} </mat-card-subtitle>
+          <mat-card-title style="height: 40px;overflow: hidden;"> {{item.title}} </mat-card-title>
+          <mat-card-subtitle style="height: 40px;overflow: hidden;">{{item.brand}} </mat-card-subtitle>
         </mat-card-content>
-        <div style="height: 180px;">
-          <img mat-card-image [src]='env.api+item.url' alt="" width="80%" height="100%">
+        <div style="height: 200px;" class="my-2">
+          <img mat-card-image [src]='env.api+item.url' alt="" height="100%" width="auto">
         </div>
         <mat-card-content class="test-center">
           <p *ngIf="item.stock <= 5">{{item.stock > 0 && item.stock <=5 ? item.stock+' items left' : "Out of Stock"}}

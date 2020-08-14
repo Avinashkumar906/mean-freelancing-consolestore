@@ -43,5 +43,14 @@ module.exports = {
         } catch (error) {
             res.status(500).json(error)
         }
-    }          
+    },
+    deleteOrder:async (req, res, next) => {
+        try { 
+            const {_id} = req.query
+            let order = await Order.findByIdAndDelete(_id)
+            res.json(order)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
 }

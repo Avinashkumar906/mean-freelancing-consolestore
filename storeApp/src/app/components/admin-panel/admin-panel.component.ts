@@ -41,20 +41,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy{
     this.disposeBag.unsubscribe()
   }
 
+  disposeBag:DisposeBag;
+
   env = environment
   id:string;
   image:string;
   product: FormGroup;
+  file:any = null;
+  alert:string = ' ';
 
-  productList:Array<Product> = this.productService.getProducts();
   
   userList:Array<User> = [];
-  
-  alert:string = ' ';
   orderList:Array<Cart> = [];
-  file:any = null;
-  disposeBag:DisposeBag;
   user:User = this.userService.getUser()
+  productList:Array<Product> = this.productService.getProducts();
 
   ngOnInit(): void {
     this.disposeBag.add(
@@ -102,6 +102,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy{
       )
     )
   }
+  deleteOrder(order:Cart){
+    this.disposeBag.add(
+      this.httpService.deleteOrder(order).subscribe(
+        data=>this.fetchOrders()
+      )
+    )
+  }
   getCount(items){
     let sum = 0;
     for (let index = 0; index < items.length; index++) {
@@ -135,6 +142,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy{
     this.product.markAsPristine()
     this.product.markAsUntouched()
     this.product.reset();
+    this.file = null;
     this.alert = 'Form Reset!'
   }
   
@@ -155,6 +163,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy{
             this.product.markAsPristine()
             this.product.markAsUntouched()
             this.product.reset();
+            this.file = null;
           },
           err=>this.alert = "error at server try after some time"
         )

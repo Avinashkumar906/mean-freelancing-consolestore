@@ -1,5 +1,6 @@
 const app = require('express')();
 const fileUploader = require('express-fileupload');
+const path = require('path')
 
 // middlewares for internal usage.
 app.use(require('cors')())
@@ -9,7 +10,8 @@ app.use(require('body-parser').json());
 app.use(fileUploader());
 
 // public folder
-app.use('/static',require('express').static('./static'))
+// app.use('/static',require('express').static('./static')) 
+app.use('/static',require('express').static(path.join(__dirname,'static')))
 
 //routes
 app.use(require('./routes/user'))

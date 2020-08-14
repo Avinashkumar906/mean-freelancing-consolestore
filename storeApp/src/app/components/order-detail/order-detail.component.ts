@@ -14,9 +14,10 @@ export class OrderDetailComponent implements OnInit,OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private httpService :HttpService
-    ) { 
-      this.disposeBag = new DisposeBag();
-    }
+  ) { 
+    this.disposeBag = new DisposeBag();
+  }
+
   ngOnDestroy(): void {
     this.disposeBag.unsubscribe();
   }
@@ -37,7 +38,9 @@ export class OrderDetailComponent implements OnInit,OnDestroy {
   getOrder(){
     this.disposeBag.add(
       this.httpService.getOrder(this.id).subscribe(
-        (data:Cart)=>this.order = data,
+        (data:Cart)=>{
+          data ? this.order = data : this.err = true
+        },
         err=>this.err = err
       )
     )

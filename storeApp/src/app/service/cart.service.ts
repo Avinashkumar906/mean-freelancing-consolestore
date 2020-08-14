@@ -57,6 +57,7 @@ export class CartService {
 
 // Class for cart model
 export class Cart{
+  _id:string;
   name:string;
   email:string;
   address:string;
@@ -65,6 +66,7 @@ export class Cart{
 
 // Interface for cart model
 export interface Cart{
+  _id:string,
   name:string,
   email:string,
   address:string,
