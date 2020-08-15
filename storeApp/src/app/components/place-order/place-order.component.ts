@@ -46,7 +46,7 @@ export class PlaceOrderComponent implements OnInit,OnDestroy {
       this.userService.userChanged.subscribe(
         data=>{
           this.user = data;
-          this.firstFormGroup.patchValue(this.user)
+          this.user ? this.firstFormGroup.patchValue(this.user) : '';
         }
       )
     )

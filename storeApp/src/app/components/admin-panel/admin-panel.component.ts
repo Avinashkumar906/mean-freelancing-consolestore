@@ -169,7 +169,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy{
         )
       )
     } else {
-      alert('Please fill all detail and Select a file!')
+      this.alert = "Please fill all detail and Select a file!"
     }
   }
 

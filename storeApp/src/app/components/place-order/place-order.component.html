@@ -1,9 +1,9 @@
-<div class="container">
+<div class="container" *ngIf="user;else pageAlert">
   <mat-horizontal-stepper color="primary" linear #stepper>
       <mat-step [stepControl]="firstFormGroup">
         <ng-template matStepLabel>Fill Detail</ng-template>
         <form [formGroup]="firstFormGroup">
-          <div *ngIf="user;else pageOneAlert">
+          <div>
             <h1 class="text-center w-100 my-2">Fill Shipping Details</h1>
             <div class="row m-0">
               <div class="col-sm-6">
@@ -29,10 +29,6 @@
               <button mat-raised-button matStepperNext type="button">Continue</button>
             </div>
           </div>
-          <ng-template #pageOneAlert>
-            <p class="mat-headline">Please login to place order!</p>
-            <button type="button" color="warn" mat-raised-button [routerLink]="['/user']">Click to go login/register page!</button>
-          </ng-template>
         </form>
       </mat-step>
       <mat-step [completed]="isSubmitted">
@@ -85,3 +81,7 @@
       </mat-step>
     </mat-horizontal-stepper>
 </div>
+<ng-template class="container my-4 py-4" #pageAlert>
+  <p class="mat-headline text-center">Please login to place order!</p>
+  <button type="button" class="d-block mx-auto m-2" color="warn" mat-raised-button [routerLink]="['/user']">Click to go login/register page!</button>
+</ng-template>
