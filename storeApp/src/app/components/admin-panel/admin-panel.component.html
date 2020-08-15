@@ -1,4 +1,4 @@
-<div class="container" *ngIf="user.role === 'admin'">
+<div class="container" *ngIf="user && (user.role === 'admin');else notAdmin">
     <mat-tab-group>
         <mat-tab label="Products">
             <form [formGroup]="product" >
@@ -68,8 +68,10 @@
                         </mat-form-field>
                     </div>
                     <div class="col-12">
-                        <h4 *ngIf="alert" class="text-center m-1">{{alert}}</h4>
-                        <span class="spinner-border" *ngIf="!alert"></span>
+                        <h4 *ngIf="alert;else spinner" class="text-center m-1">{{alert}}</h4>
+                        <ng-template #spinner>
+                            <span class="spinner-border"></span>
+                        </ng-template>
                         <div class="form-element">
                             <button type="button" mat-raised-button color="primary" (click)="product.valid && submit()" [disabled]="product.invalid">Save</button>
                             <button type="button" mat-raised-button class="ml-2" (click)="resetForm()">Reset</button>
@@ -186,4 +188,6 @@
         </mat-tab>
     </mat-tab-group>
 </div>
-<h2 *ngIf="!(user.role === 'admin')" class="text-center">You are not Admin</h2>
+<ng-template #notAdmin>
+    <h2 class="text-center">You are not Admin</h2>
+</ng-template>

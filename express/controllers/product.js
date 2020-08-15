@@ -35,10 +35,10 @@ module.exports = {
     deleteProduct:async (req, res, next) => {
         try {
             let {_id} = req.query;
-            // let product = await Product.findById(_id)
-            // console.log(path.join(__dirname,'../',product.url))
             let product = await Product.findByIdAndDelete(_id)
-            product ? fs.unlinkSync(`.${product.url}`) : console.log('no product')
+            if(fs.existsSync(`.${product.url}`) && product){
+                fs.unlinkSync(`.${product.url}`);
+            }
             res.status(201).json(product)    
         } catch (error) {
             console.log(error)

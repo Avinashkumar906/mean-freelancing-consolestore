@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./models/user')
 const app = require('./app')
+const bcrypt = require('bcryptjs')
 
 //Setting enviroment variables
 if(!process.env.PORT){
@@ -14,18 +15,18 @@ mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true,useUnifiedTopolog
         let user = await User.findOne({email:process.env.ADMIN_EMAIL})
         if(!user){
             user = new User({
-                name : "ADMIN",
+                name : process.env.ADMIN_NAME,
                 email: process.env.ADMIN_EMAIL.toLowerCase(),
-                password:process.env.ADMIN_PSWD,
-                role:"admin"
+                password:bcrypt.hashSync(process.env.ADMIN_PSWD,10),
+                role:process.env.ADMIN_ROLE
             })
-            user.save((res)=>console.log(`Admin mail: ${user.email},Admin Password: ${user.password}`))
+            user.save((res)=>console.log(`Admin Registered! check enviroment to view admin email/password`))
         } else {
-            console.log(`Admin mail: ${user.email},Admin Password: ${user.password}`)
+            console.log(`Admin Registered! check enviroment to view admin email/password`)
         }
         console.log(`Mongodb Up! <br/>`);
     } else{
-        console.log(`${err} <br/>`);
+        console.log(`${err}`);
     } 
 });
 

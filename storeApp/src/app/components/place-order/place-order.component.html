@@ -3,30 +3,36 @@
       <mat-step [stepControl]="firstFormGroup">
         <ng-template matStepLabel>Fill Detail</ng-template>
         <form [formGroup]="firstFormGroup">
-          <h1 class="text-center w-100 my-2">Fill Shipping Details</h1>
-          <div class="row m-0">
-            <div class="col-sm-6">
-              <mat-form-field>
-                <mat-label>Name Field</mat-label>
-                <input matInput placeholder="Enter Name" formControlName="name" required>
-              </mat-form-field>
+          <div *ngIf="user;else pageOneAlert">
+            <h1 class="text-center w-100 my-2">Fill Shipping Details</h1>
+            <div class="row m-0">
+              <div class="col-sm-6">
+                <mat-form-field>
+                  <mat-label>Name Field</mat-label>
+                  <input matInput placeholder="Enter Name" formControlName="name" required>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field>
+                  <mat-label>Email Field</mat-label>
+                  <input matInput placeholder="Enter Email" formControlName="email" required>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12">
+                <mat-form-field>
+                  <mat-label>Address Field</mat-label>
+                  <textarea matInput placeholder="Enter Address" formControlName="address" required></textarea>
+                </mat-form-field>
+              </div>
             </div>
-            <div class="col-sm-6">
-              <mat-form-field>
-                <mat-label>Email Field</mat-label>
-                <input matInput placeholder="Enter Email" formControlName="email" required>
-              </mat-form-field>
-            </div>
-            <div class="col-sm-12">
-              <mat-form-field>
-                <mat-label>Address Field</mat-label>
-                <textarea matInput placeholder="Enter Address" formControlName="address" required></textarea>
-              </mat-form-field>
+            <div>
+              <button mat-raised-button matStepperNext type="button">Continue</button>
             </div>
           </div>
-          <div>
-            <button mat-raised-button matStepperNext type="button">Continue</button>
-          </div>
+          <ng-template #pageOneAlert>
+            <p class="mat-headline">Please login to place order!</p>
+            <button type="button" color="warn" mat-raised-button [routerLink]="['/user']">Click to go login/register page!</button>
+          </ng-template>
         </form>
       </mat-step>
       <mat-step [completed]="isSubmitted">
