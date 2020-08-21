@@ -1,5 +1,4 @@
-import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { User, UserService } from './service/user.service';
 import { HttpService } from './service/http.service';
 import { Product, ProductService } from './service/product.service';
@@ -11,26 +10,17 @@ import { CartService } from './service/cart.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy,OnInit{
-  
-  mobileQuery: MediaQueryList;
 
   user:User = this.userService.getUser();
   isDataLoaded:boolean;
   error:any;
-
-  private _mobileQueryListener: () => void;
   
   constructor(
-      changeDetectorRef: ChangeDetectorRef, 
-      media: MediaMatcher,
       private userService:UserService,
       private cartService:CartService,
       private productService:ProductService,
       private httpService :HttpService
     ){
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit(): void {
@@ -55,7 +45,7 @@ export class AppComponent implements OnDestroy,OnInit{
   }
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+ 
   }
 
   getCount(){
